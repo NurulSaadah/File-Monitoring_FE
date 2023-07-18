@@ -6,13 +6,22 @@ import { createGtm } from '@gtm-support/vue-gtm'
 import stores from './stores'
 import router from './router'
 import vuesticGlobalConfig from './services/vuestic-ui/global-config'
+import axios from './plugins/axios'
 import App from './App.vue'
 
+
+
 const app = createApp(App)
+
 
 app.use(stores)
 app.use(router)
 app.use(i18n)
+
+app.use(axios,{
+  baseUrl: 'http://localhost:8000/api/',
+})
+
 app.use(createVuestic({ config: vuesticGlobalConfig }))
 
 if (import.meta.env.VITE_APP_GTM_ENABLED) {
