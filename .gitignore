@@ -31,3 +31,4 @@ netlify.toml
 #yml
 .github
 node_modules
+automerge.yml
