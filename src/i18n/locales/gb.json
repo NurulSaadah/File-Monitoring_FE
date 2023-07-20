@@ -229,12 +229,12 @@
       "disabled": "Disabled checkbox",
       "error": "Checkbox with error",
       "errorMessage": "Checkbox with error messages",
-      "dashboardPage": "Dashboard",
-      "tenderPage":"Tender Management",
-      "cvPage":"CV Management",
-      "backupPage":"My Backup files",
-      "myCvPage":"My CV",
-      "settingPage":"Setting"
+      "dashboardPage": "Dashboard (m1)",
+      "tenderPage":"Tender Management (m2)",
+      "cvPage":"CV Management (m3)",
+      "backupPage":"My Backup files (m4)",
+      "myCvPage":"My CV (m5)",
+      "settingPage":"Setting (m6)"
     },
     "dateTimePicker": {
       "title": "Date time pickers",

@@ -29,14 +29,36 @@
   <br />
   <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
     <va-card-title>List of Users</va-card-title>
-    <va-card-content>{{ t('cards.contentTextLong') }}</va-card-content>
+    <va-card-content class="overflow-auto">
+      <table class="va-table va-table--striped va-table--hoverable w-full">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Screen Access</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>nurul.mdshariff@arken.biz</td>
+            <td>m1|m2|m3|m4|m5|m6</td>
+            <td>Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </va-card-content>
   </va-card>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  
   const { t } = useI18n()
+  const users=""
+
+ 
 
   const simple = ref('')
   const checkbox = ref({
