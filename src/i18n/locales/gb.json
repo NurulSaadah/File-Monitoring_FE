@@ -228,7 +228,13 @@
       "readonly": "Readonly checkbox",
       "disabled": "Disabled checkbox",
       "error": "Checkbox with error",
-      "errorMessage": "Checkbox with error messages"
+      "errorMessage": "Checkbox with error messages",
+      "dashboardPage": "Dashboard (m1)",
+      "tenderPage":"Tender Management (m2)",
+      "cvPage":"CV Management (m3)",
+      "backupPage":"My Backup files (m4)",
+      "myCvPage":"My CV (m5)",
+      "settingPage":"Setting (m6)"
     },
     "dateTimePicker": {
       "title": "Date time pickers",
@@ -337,7 +343,16 @@
     "line-maps": "Line Maps",
     "login-singup": "Login/Signup",
     "404-pages": "404 Pages",
-    "faq": "Faq"
+    "faq": "Faq",
+    "tender-management":"Tender Management",
+    "cv-management":"CV Management",
+    "backup-files":"My Backup Files",
+    "mycv":"My CV",
+    "global-setting":"Setting",
+    "general-setting":"General Setting",
+    "user-management":"User Management",
+    "client-management":"Client Management"
+
   },
   "messages": {
     "all": "See all messages",

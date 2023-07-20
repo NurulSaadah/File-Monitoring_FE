@@ -1,9 +1,17 @@
+/* eslint-disable prettier/prettier */
 export interface INavigationRoute {
   name: string
   displayName: string
   meta: { icon: string }
   children?: INavigationRoute[]
 }
+//{
+//  name: 'dashboard',** 1. nama ni ambik name kat index.ts
+//  displayName: 'menu.dashboard', ** 2. ni ambik kat src/i18n/locales/gb.json..kene declare kat sini dulu
+//  meta: {
+//    icon: 'vuestic-iconset-dashboard',** 3. ni icon
+//  },
+//}, ** then declare kat CategoriesConfig.ts
 
 export default {
   root: {
@@ -17,7 +25,64 @@ export default {
       meta: {
         icon: 'vuestic-iconset-dashboard',
       },
+    }, 
+    {
+      name: 'tender',
+      displayName: 'menu.tender-management',
+      meta: {
+        icon: 'vuestic-iconset-components',
+      },
+    }, 
+    {
+      name: 'cv',
+      displayName: 'menu.cv-management',
+      meta: {
+        icon: 'vuestic-iconset-ui-elements',
+      },
+    }, 
+    {
+      name: 'backup',
+      displayName: 'menu.backup-files',
+      meta: {
+        icon: 'vuestic-iconset-files',
+      },
+    }, 
+    {
+      name: 'mycv',
+      displayName: 'menu.mycv',
+      meta: {
+        icon: 'vuestic-iconset-forms',
+      },
+    }, 
+    {
+      name: 'setting',
+      displayName: 'menu.global-setting',
+      meta: {
+        icon: 'vuestic-iconset-settings',
+      },
+      disabled: true,
+      children: [
+        {
+          name: 'general',
+          displayName: 'menu.general-setting',
+        },
+        {
+          name: 'user',
+          displayName: 'menu.user-management',
+        },
+        {
+          name: 'client',
+          displayName: 'menu.client-management',
+        },
+      ],
     },
+    {
+      name: '',
+      displayName: '',
+      meta: {
+        icon: '',
+      },
+    }, 
     {
       name: 'statistics',
       displayName: 'menu.statistics',
@@ -65,10 +130,7 @@ export default {
           name: 'markup',
           displayName: 'menu.markupTables',
         },
-        // {
-        //   name: 'data',
-        //   displayName: 'menu.dataTables',
-        // },
+       
       ],
     },
     {
@@ -219,5 +281,6 @@ export default {
         },
       ],
     },
+    
   ] as INavigationRoute[],
 }

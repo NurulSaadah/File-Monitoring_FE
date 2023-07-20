@@ -13,8 +13,8 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'dashboard' },
   },
   {
-    name: 'admin',
-    path: '/admin',
+    name: 'afm',
+    path: '/afm',
     component: AppLayout,
     children: [
       {
@@ -159,6 +159,46 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('../pages/admin/pages/test.vue'),
           },
         ],
+      },
+      {
+        name: 'tender',
+        path: 'tender-management', //ni untuk appearkan nama kat url
+        component: () => import('../pages/tender-management/tender.vue'),
+      },
+      {
+        name: 'cv',
+        path: 'cv-management', 
+        component: () => import('../pages/cv-management/cvs.vue'),
+      },
+      {
+        name: 'mycv',
+        path: 'my-cv', 
+        component: () => import('../pages/cv-management/mycv.vue'),
+      },
+      {
+        name: 'backup',
+        path: 'my-backup-files', 
+        component: () => import('../pages/my-backup/backup-files.vue'),
+      },
+      {
+        name: 'setting',
+        path: 'setting', 
+        component: () => import('../pages/setting/global-setting.vue'),
+      },
+      {
+        name: 'general',
+        path: 'general-setting', 
+        component: () => import('../pages/setting/general-setting.vue'),
+      },
+      {
+        name: 'user',
+        path: 'user-management', 
+        component: () => import('../pages/setting/user-management.vue'),
+      },
+      {
+        name: 'client',
+        path: 'client-management', 
+        component: () => import('../pages/setting/client-management.vue'),
       },
       UIRoute,
     ],

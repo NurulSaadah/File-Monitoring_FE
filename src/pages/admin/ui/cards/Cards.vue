@@ -8,7 +8,7 @@
         </va-card>
 
         <va-card class="col-span-12 sm:col-span-6">
-          <va-card-title>
+          <va-card-title> 2
             {{ t('cards.title.withControls') }}
             <va-spacer />
             <va-button class="mr-1" size="small" icon="refresh" />
