@@ -143,6 +143,51 @@ export default [
         itemName: 'Line Maps',
         itemLink: '/admin/maps/line-maps',
       },
+      {
+        categoryName: 'Tender Management',
+        items: [
+          {
+            itemName: 'Tender Management',
+            itemLink: '/tender-management/tender',
+          },
+        ],
+      },
+      {
+        categoryName: 'CV Management',
+        items: [
+          {
+            itemName: 'CV Management',
+            itemLink: '/cv-management/cvs',
+          },
+        ],
+      },
+      {
+        categoryName: 'My CV',
+        items: [
+          {
+            itemName: 'My CV',
+            itemLink: '/cv-management/mycv',
+          },
+        ],
+      },
+      {
+        categoryName: 'My Backup Files',
+        items: [
+          {
+            itemName: 'My Backup Files',
+            itemLink: '/my-backup/backup-files',
+          },
+        ],
+      },
+      {
+        categoryName: 'Setting',
+        items: [
+          {
+            itemName: 'Setting',
+            itemLink: '/setting/global-setting',
+          },
+        ],
+      },
     ],
   },
 ]
