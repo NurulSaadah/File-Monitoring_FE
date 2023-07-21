@@ -10,16 +10,16 @@
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
             <va-input v-model="parameter" placeholder="Enter Parameter" />
           </div>
-          <div class="flex md:col-span-1 sm:col-span-6 col-span-12">
+          <div class="flex md:col-span-2 sm:col-span-6 col-span-12">
             <va-input v-model="value" placeholder="Enter Value" />
           </div>
           <div class="flex md:col-span-2 sm:col-span-6 col-span-12">
             <va-input v-model="code" placeholder="Enter Code" />
           </div>
-          <div class="flex md:col-span-1 sm:col-span-6 col-span-12">
+          <div class="flex md:col-span-2 sm:col-span-6 col-span-12">
             <va-input v-model="index" placeholder="Enter Index" />
           </div>
-          <div class="flex md:col-span-8 sm:col-span-6 col-span-12">
+          <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
             <va-input v-model="description" placeholder="Enter Description" />
           </div>
         </div>
@@ -104,6 +104,44 @@ export default {
               }).then(async (result) => {
 
                 if (result.isConfirmed) {
+                  try {
+                    const headers = {
+                              Authorization: "Bearer " + this.userdetails.access_token,
+                              Accept: "application/json",
+                              "Content-Type": "application/json",
+                          };
+                          const response = await this.$axios.post(
+                              "settings/insertOrupdate", {
+                                  type: this.type,
+                                  parameter:this.parameter,
+                                
+                              }, {
+                                  headers
+                              }
+                          );
+                          console.log("response", response.data);
+                          if (response.data.code == 200) {
+                              this.loader = false;
+                              this.resetmodel();
+                              this.$swal.fire('Succesfully save as draft', '', 'success')
+                              this.GoBack();
+                          } else {
+                              this.loader = false;
+                              this.resetmodel();
+                              this.$swal.fire({
+                                  icon: 'error',
+                                  title: 'Oops... Something Went Wrong!',
+                                  text: 'the error is: ' + JSON.stringify(response.data.message),
+                              })
+                              this.GoBack();
+                          }
+                  } catch (e) {
+                          this.$swal.fire({
+                              icon: 'error',
+                              title: 'Oops... Something Went Wrong!',
+                              text: 'the error is: ' + e,
+                          })
+                      }
                 } else if (result.isDismissed) {
                       this.$swal.fire('Record are not saved', '', 'info')
                   }
