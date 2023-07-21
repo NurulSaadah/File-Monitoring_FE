@@ -5,29 +5,29 @@
       <form>
         <div class="grid grid-cols-12 gap-6">
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Category" />
+            <va-input v-model="type" placeholder="Enter Type" />
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Parameter" />
+            <va-input v-model="parameter" placeholder="Enter Parameter" />
           </div>
           <div class="flex md:col-span-1 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Value" />
+            <va-input v-model="value" placeholder="Enter Value" />
           </div>
           <div class="flex md:col-span-2 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Code" />
+            <va-input v-model="code" placeholder="Enter Code" />
           </div>
           <div class="flex md:col-span-1 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Index" />
+            <va-input v-model="index" placeholder="Enter Index" />
           </div>
           <div class="flex md:col-span-8 sm:col-span-6 col-span-12">
-            <va-input v-model="simple" placeholder="Enter Description" />
+            <va-input v-model="description" placeholder="Enter Description" />
           </div>
         </div>
        
       </form>
     </va-card-content>
     <va-card-content class="my-3 flex flex-wrap items-center gap-2">
-      <va-button icon="add_circle_outline"> Save Record</va-button>
+      <va-button icon="add_circle_outline" type="submit" @click="onCreate()"> Save Record</va-button>
     </va-card-content>
   </va-card>
   <br />
@@ -79,24 +79,40 @@
   </va-card>
 </template>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
+<script>
+import swal from 'sweetalert2';
+export default {
+
+  data() {
+    return {
+      simple:'',
+    };
+  },
+  mounted() {
   
-  const { t } = useI18n()
-  const users=""
 
- 
+  },
+  beforeMount() {
+   
+  },
+  methods: {
+    async onCreate() {
+      swal.fire({
+                  title: 'Do you want save this record?',
+                  showCancelButton: true,
+                  confirmButtonText: 'Save',
+              }).then(async (result) => {
 
-  const simple = ref('')
-  const checkbox = ref({
-    unselected1: false,
-    unselected2: false,
-    unselected3: false,
-    unselected4: false,
-    unselected5: false,
-    unselected6: false,
-  })
+                if (result.isConfirmed) {
+                } else if (result.isDismissed) {
+                      this.$swal.fire('Record are not saved', '', 'info')
+                  }
+              })
+    },
+       
+  }
+};
+
 </script>
 
 <style scoped></style>
