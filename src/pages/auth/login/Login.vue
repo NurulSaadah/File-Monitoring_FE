@@ -1,57 +1,68 @@
 <template>
   <form @submit.prevent="onsubmit">
-    <va-input
-      v-model="email"
-      class="mb-4"
-      type="email"
-      :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
-    />
+    <va-input id="input-email" class="mb-4" v-model="emailuser" label="Email"  
+    :error="!!emailErrors.length"
+    :error-messages="emailErrors"></va-input>
 
-    <va-input
-      v-model="password"
-      class="mb-4"
-      type="password"
-      :label="t('auth.password')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
-    />
+    <va-input id="input-passwor" class="mb-4" type="password" v-model="passworduser" label="Password"
+    :error="!!passwordErrors.length"
+    :error-messages="passwordErrors"
+    ></va-input>
 
-    <div class="auth-layout__options flex items-center justify-between">
-      <va-checkbox v-model="keepLoggedIn" class="mb-0" :label="t('auth.keep_logged_in')" />
-      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">{{
-        t('auth.recover_password')
-      }}</router-link>
+    <div class="auth-layout__options flex items-right justify-between">
+      <router-link class="ml-1 va-link" :to="{ name: 'recover-password' }">Recover Password</router-link>
     </div>
 
     <div class="flex justify-center mt-4">
-      <va-button class="my-0" @click="onsubmit">{{ t('auth.login') }}</va-button>
+      <va-button class="my-0" @click="onsubmit">Login</va-button>
     </div>
   </form>
 </template>
 
-<script setup lang="ts">
-  import { computed, ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useI18n } from 'vue-i18n'
-  const { t } = useI18n()
+<script>
+export default {
 
-  const email = ref('')
-  const password = ref('')
-  const keepLoggedIn = ref(false)
-  const emailErrors = ref<string[]>([])
-  const passwordErrors = ref<string[]>([])
-  const router = useRouter()
+  name: "login",
 
-  const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
+  data() {
+    return {
+     emailuser:'',
+     passworduser:'',
 
-  function onsubmit() {
-    if (!formReady.value) return
+     emailErrors:'',
+     passwordErrors:'',
+    };
+  },
 
-    emailErrors.value = email.value ? [] : ['Email is required']
-    passwordErrors.value = password.value ? [] : ['Password is required']
+  methods: {
+    async onsubmit() {
+      try{
+        if (!this.emailuser) {
+          this.emailErrors = "Email is Required!";
+        }
+        if (!this.passworduser) {
+          this.passwordErrors = "Password is Required!";
+        }
+        if (this.emailuser && this.passworduser) {
+          const response = await this.$axios.post("auth/login", {
+            email: this.emailuser,
+            password: this.passworduser
+          });
 
-    router.push({ name: 'dashboard' })
-  }
+          this.userdetail = response.data;
+          
+          if (this.userdetail.code == 200) {
+            localStorage.setItem("userdetails",JSON.stringify(this.userdetail));
+
+        this.$router.push({ name: 'dashboard' });
+          }
+        }
+      }catch (e) {
+        this.emailErrors = "Email and Password does not matched";
+        this.passwordErrors = "Email and Password does not matched";
+      }
+    },
+  },
+};
 </script>
+

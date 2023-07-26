@@ -49,26 +49,14 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Associate</td>
-            <td>position</td>
-            <td>-</td>
-            <td>-</td>
-            <td>1</td>
-            <td>Position Avalaible in Araken</td>
-            <td> <va-list-item-section icon>
-              <va-icon name="edit" color="gray" />
-            </va-list-item-section></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Sr Associate</td>
-            <td>position</td>
-            <td>-</td>
-            <td>-</td>
-            <td>2</td>
-            <td>Position Avalaible in Araken</td>
+          <tr v-for="(set, idx) in settingList" :key="idx">
+            <td>{{ idx + 1 }}</td>
+            <td>{{ set.position }}</td>
+            <td>{{ set.type }}</td>
+            <td>{{ set.value }}</td>
+            <td>{{ set.code }}</td>
+            <td>{{ set.index }}</td>
+            <td>{{ set.description }}</td>
             <td> <va-list-item-section icon>
               <va-icon name="edit" color="gray" />
             </va-list-item-section></td>
@@ -85,11 +73,17 @@ export default {
 
   data() {
     return {
-      simple:'',
+      settingList: [],
+      type:'',
+      parameter:'',
+      value:'',
+      code:'',
+      index:'',
+      description:'',
     };
   },
   mounted() {
-  
+  this.GetSettingList();
 
   },
   beforeMount() {
@@ -101,53 +95,69 @@ export default {
                   title: 'Do you want save this record?',
                   showCancelButton: true,
                   confirmButtonText: 'Save',
-              }).then(async (result) => {
-
+                }).then(async (result) => {
                 if (result.isConfirmed) {
                   try {
-                    const headers = {
-                              Authorization: "Bearer " + this.userdetails.access_token,
-                              Accept: "application/json",
-                              "Content-Type": "application/json",
-                          };
                           const response = await this.$axios.post(
                               "settings/insertOrupdate", {
                                   type: this.type,
                                   parameter:this.parameter,
+                                  value:this.value,
+                                  code:this.code,
+                                  description:this.description,
                                 
-                              }, {
-                                  headers
-                              }
+                              }, 
                           );
                           console.log("response", response.data);
                           if (response.data.code == 200) {
-                              this.loader = false;
-                              this.resetmodel();
-                              this.$swal.fire('Succesfully save as draft', '', 'success')
-                              this.GoBack();
+                              //this.loader = false;
+                              this.resetModel();
+                              swal.fire('Record Successfully Saved', '', 'success')
                           } else {
-                              this.loader = false;
-                              this.resetmodel();
-                              this.$swal.fire({
+                              //this.loader = false;
+                              this.resetModel();
+                              swal.fire({
                                   icon: 'error',
                                   title: 'Oops... Something Went Wrong!',
                                   text: 'the error is: ' + JSON.stringify(response.data.message),
                               })
-                              this.GoBack();
+                      
                           }
                   } catch (e) {
-                          this.$swal.fire({
+                          swal.fire({
                               icon: 'error',
                               title: 'Oops... Something Went Wrong!',
                               text: 'the error is: ' + e,
                           })
                       }
                 } else if (result.isDismissed) {
-                      this.$swal.fire('Record are not saved', '', 'info')
+                      swal.fire('Record are not saved', '', 'info')
                   }
               })
     },
-       
+
+    resetModel(){
+      this.type='',
+      this.parameter='',
+      this.value='',
+      this.code='',
+      this.index='',
+      this.description=''
+    },
+     
+    async GetSettingList() {
+      const headers = {
+        Authorization: "Bearer " + 1,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const response = await this.$axios.get("hospital/list",{headers});
+      if (response.data.code == 200 || response.data.code == "200") {
+        this.settingList = response.data.list;
+      } else {
+        this.settingList = [];
+      }
+    },
   }
 };
 

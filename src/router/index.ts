@@ -10,7 +10,7 @@ import UIRoute from '../pages/admin/ui/route'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)',
-    redirect: { name: 'dashboard' },
+    redirect: { name: 'login' }, // to set default redirect page
   },
   {
     name: 'afm',
