@@ -1,34 +1,77 @@
 <template>
-  <form class="login" @submit.prevent="onsubmit">
-    <va-input
-      v-model="email"
-      class="mb-4"
-      type="email"
-      :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
-    />
+  <form @submit.prevent="onsubmit">
+    <div class="flex justify-center mt-0 mb-3">
+    <span style="color: red;">Please Reset Your Password !</span>
+    </div>
+
+    <va-input id="input-email" class="mb-4" v-model="emailuser" label="Email" disabled></va-input>
+
+    <va-input id="input-passwor" class="mb-4" type="password" v-model="passworduser" label="New Password"
+    :error="!!passwordErrors.length"
+    :error-messages="passwordErrors"
+    ></va-input>
+
+    <va-input id="input-passwor" class="mb-4" type="password" v-model="confirmpassworduser" label="Confirm Password"
+    :error="!!confirmpasswordErrors.length"
+    :error-messages="confirmpasswordErrors"
+    ></va-input>
 
     <div class="flex justify-center mt-4">
-      <va-button type="submit" class="my-0">{{ t('auth.reset_password') }}</va-button>
+      <va-button class="my-0" @click="onsubmit">Reset Password</va-button>
     </div>
+    
   </form>
 </template>
 
-<script setup lang="ts">
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useI18n } from 'vue-i18n'
-  const { t } = useI18n()
+<script>
+import swal from 'sweetalert2';
+export default {
 
-  const email = ref('')
-  const emailErrors = ref<string[]>([])
+  name: "login",
+  beforeMount() {
+    this.userdetails = JSON.parse(localStorage.getItem("userdetails"));
+    this.emailuser=this.userdetails.user.email
+  },
 
-  function onsubmit() {
-    if (!email.value) {
-      emailErrors.value = ['Email is required']
-    } else {
-      useRouter().push('/')
-    }
-  }
+  data() {
+    return {
+     emailuser:'',
+     passworduser:'',
+     confirmpassworduser:'',
+
+     passwordErrors:'',
+     confirmpasswordErrors:'',
+    };
+  },
+
+  methods: {
+    async onsubmit() {
+      try{
+        if (!this.passworduser) {
+          this.passwordErrors = "Password is Required!";
+        }
+        if (!this.confirmpassworduser) {
+          this.confirmpasswordErrors = "Password is Required!";
+        }
+        if (this.passworduser == this.confirmpassworduser) {
+          const response = await this.$axios.post("reset", {
+            password: this.passworduser,
+            userId:this.userdetails.user.user_id,
+          });
+          if (response.data.code == 200) {
+            swal.fire('Password Successfully Updated.Please Login to Continue', '', 'success')
+            this.$router.push({ name: 'login' });
+          }
+        }else{
+          this.passwordErrors = "Password does not matched";
+          this.confirmpasswordErrors = "Password does not matched";
+        }
+      }catch (e) {
+        this.passwordErrors = "Password does not matched";
+        this.confirmpasswordErrors = "Password does not matched";
+      }
+    },
+  },
+};
 </script>
+
