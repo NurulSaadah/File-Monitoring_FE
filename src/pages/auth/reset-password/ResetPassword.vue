@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert2';
 export default {
 
   name: "login",
@@ -55,12 +56,15 @@ export default {
         if (this.passworduser == this.confirmpassworduser) {
           const response = await this.$axios.post("reset", {
             password: this.passworduser,
-            confirmpassword: this.confirmpassworduser
+            userId:this.userdetails.user.user_id,
           });
-          this.userdetail = response.data;
-          if (this.userdetail.code == 200) {
-                this.$router.push({ name: 'login' });
+          if (response.data.code == 200) {
+            swal.fire('Password Successfully Updated.Please Login to Continue', '', 'success')
+            this.$router.push({ name: 'login' });
           }
+        }else{
+          this.passwordErrors = "Password does not matched";
+          this.confirmpasswordErrors = "Password does not matched";
         }
       }catch (e) {
         this.passwordErrors = "Password does not matched";
