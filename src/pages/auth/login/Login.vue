@@ -15,19 +15,21 @@
     </div>
 
     <div class="flex justify-center mt-4">
-      <va-button class="my-0" @click="onsubmit">Login</va-button>
+      <va-button class="my-0" @click="onsubmit"> <Loader v-if="loader" /> Login</va-button>
     </div>
     
   </form>
 </template>
 
 <script>
+import Loader from "../../../components/loader.vue";
 export default {
 
   name: "login",
 
   data() {
     return {
+     loader:false,
      emailuser:'',
      passworduser:'',
 
@@ -35,7 +37,7 @@ export default {
      passwordErrors:'',
     };
   },
-
+  components: { Loader },
   methods: {
     async onsubmit() {
       try{
@@ -46,6 +48,7 @@ export default {
           this.passwordErrors = "Password is Required!";
         }
         if (this.emailuser && this.passworduser) {
+          this.loader = true;
           const response = await this.$axios.post("login", {
             email: this.emailuser,
             password: this.passworduser
@@ -53,7 +56,7 @@ export default {
           this.userdetail = response.data;
           if (this.userdetail.code == 200) {
             localStorage.setItem("userdetails",JSON.stringify(this.userdetail));
-
+              this.loader = false;
               if(this.passworduser == '123456'){
                 this.$router.push({ name: 'reset-password' });
               }else{
@@ -62,6 +65,7 @@ export default {
           }
         }
       }catch (e) {
+        this.loader = false;
         this.emailErrors = "Email and Password does not matched";
         this.passwordErrors = "Email and Password does not matched";
       }
