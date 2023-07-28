@@ -8,10 +8,11 @@
           :color="colors.primary"
           @click="isSidebarMinimized = !isSidebarMinimized"
         />
-        <h1>Araken File Monitoring System</h1>
-        <!--<router-link to="/" title="test">
-          <vuestic-logo class="logo" />
-        </router-link>-->
+        <!--<router-link to="/" title="test">-->
+          <img src="../../../assets/images/small-logo2.png" alt="Logo" style="height: 100%;width: 15%;" />Araken File Monitoring System
+        <!--</router-link>-->
+        <!--<h1>Araken File Monitoring System</h1>-->
+       
       </div>
     </template>
     <template #center>
