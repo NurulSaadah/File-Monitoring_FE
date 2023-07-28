@@ -1,18 +1,18 @@
 <template>
-  <div class="auth-layout grid grid-cols-12 content-center">
-    <div class="flex col-span-12 p-4 justify-center">
+  <div class="auth-layout grid grid-cols-12 content-center" style="background-color:rgb(6, 8, 131);">
+    <div class="flex col-span-12 justify-center">
       <router-link class="py-5 justify-center flex" to="/">
-        <vuestic-logo height="32" />
+        <img style="margin: 0px;padding: 0px;" src="../../assets/images/logo-afms2.png" />
       </router-link>
     </div>
 
-    <div class="flex justify-center col-span-12 p-4">
+    <div class="flex justify-center col-span-12 p-1">
       <va-card class="auth-layout__card">
         <va-card-content>
           <va-tabs v-model="tabIndex" center>
             <template #tabs>
-              <va-tab name="login">{{ t('auth.login') }}</va-tab>
-              <va-tab name="signup">{{ t('auth.createNewAccount') }}</va-tab>
+              <va-tab name="login">Login</va-tab>
+              <va-tab name="signup">Create New Account</va-tab>
             </template>
           </va-tabs>
 
@@ -28,15 +28,11 @@
 </template>
 
 <script>
-  import VuesticLogo from '../components/VuesticLogo.vue'
-  import { useI18n } from 'vue-i18n'
-
   export default {
     name: 'AuthLayout',
-    components: { VuesticLogo },
+    components: { },
     setup() {
-      const { t } = useI18n()
-      return { t }
+    
     },
     data() {
       return {
