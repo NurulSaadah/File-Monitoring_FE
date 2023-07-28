@@ -4,7 +4,7 @@
     :error="!!emailErrors.length"
     :error-messages="emailErrors"></va-input>
 
-    <va-input id="input-passwor" class="mb-4" type="password" v-model="passworduser" label="Password"
+    <va-input id="input-password" class="mb-4" type="password" v-model="passworduser" label="Password"
     :error="!!passwordErrors.length"
     :error-messages="passwordErrors"
     ></va-input>
