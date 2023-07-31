@@ -21,7 +21,7 @@
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
             <va-input v-model="description" placeholder="Enter Description" />
-            <va-input v-model="editID" hidden />
+            <input type="hidden" v-model="editID" />
           </div>
         </div>
        
@@ -225,7 +225,8 @@ export default {
       this.value='',
       this.code='',
       this.index='',
-      this.description=''
+      this.description='',
+      this.editID
     },
     //edit record
     //get record to update
