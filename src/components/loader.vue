@@ -1,8 +1,7 @@
 <template>
   <div class="loader">
     <span>
-      <i class="fas fa-spinner fa-pulse"></i>
-      <p>Processing...</p>
+      <i class="fa fa-spinner fa-pulse" style="font-size:24px"></i>
     </span>
   </div>
 </template>
