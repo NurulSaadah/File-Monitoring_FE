@@ -200,6 +200,21 @@ const routes: Array<RouteRecordRaw> = [
         path: 'client-management', 
         component: () => import('../pages/setting/client-management.vue'),
       },
+      {
+        name: 'new-tender',
+        path: 'new-tender', 
+        component: () => import('../pages/tender-management/new-tender.vue'),
+      },
+      {
+        name: 'view-tender',
+        path: 'view-tender', 
+        component: () => import('../pages/tender-management/view-tender.vue'),
+      },
+      {
+        name: 'edit-tender',
+        path: 'edit-tender', 
+        component: () => import('../pages/tender-management/edit-tender.vue'),
+      },
       UIRoute,
     ],
   },
