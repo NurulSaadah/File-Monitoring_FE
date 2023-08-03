@@ -1,6 +1,6 @@
 <template>
   <va-card class="col-span-12 sm:col-span-12">
-    <va-card-title>Settings</va-card-title>
+    <va-card-title>Setting : General Setting</va-card-title>
     <va-card-content>
       <form>
         <div class="grid grid-cols-12 gap-6">
@@ -28,7 +28,7 @@
       </form>
     </va-card-content>
     <va-card-content class="my-3 flex flex-wrap items-center gap-2">
-      <va-button icon="add_circle_outline" type="submit" @click="onCreate()"><Loader v-if="loader" />Save Record</va-button>
+      <va-button icon="add_circle_outline" type="submit" @click="onCreate()" color="success"><Loader v-if="loader" />Save Record</va-button>
     </va-card-content>
   </va-card>
   <br />

@@ -345,6 +345,9 @@
     "404-pages": "404 Pages",
     "faq": "Faq",
     "tender-management":"Tender Management",
+    "new-tender":"New Tender Submission",
+    "view-tender":"View Tender Submission",
+    "edit-tender":"Update Tender Submission",
     "cv-management":"CV Management",
     "backup-files":"My Backup Files",
     "mycv":"My CV",
@@ -352,6 +355,7 @@
     "general-setting":"General Setting",
     "user-management":"User Management",
     "client-management":"Client Management"
+   
 
   },
   "messages": {
