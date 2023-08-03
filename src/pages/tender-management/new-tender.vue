@@ -38,16 +38,40 @@
        
       </form>
     </va-card-content>
-    <va-card-content class="my-3 flex flex-wrap items-center gap-2">
-      <va-button icon="add_circle_outline" type="submit" @click="onCreate()"><Loader v-if="loader" />Save Record</va-button>
-    </va-card-content>
 
-    <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
-    <va-card-title>List of Clients</va-card-title>
-  
-  </va-card>
   </va-card>
   <br />
+ 
+    <va-card class="col-span-2">
+      <va-card-title>Tender Requirement</va-card-title>
+      <va-card-content>
+        <va-file-upload v-model="tenderRequirementFile" type="single" />
+      </va-card-content>
+    <br>
+      <va-card-title>Technical Submission</va-card-title>
+      <va-card-content>
+        <va-file-upload v-model="technicalSubmissionFile" type="single" />
+      </va-card-content>
+    <br>
+      <va-card-title>Financial Submission</va-card-title>
+      <va-card-content>
+        <va-file-upload v-model="financialSubmissionFile" type="single" />
+      </va-card-content>
+   <br>
+      <va-card-title>Others Submission</va-card-title>
+      <va-card-content>
+        <va-file-upload v-model="othersSubmissionFile" type="single" />
+      </va-card-content>
+    </va-card>
+    <br>
+    <br>
+    <br>
+
+      <span><va-button icon="chevron_left" type="submit" @click="onBack()" color="#36e9f6"><Loader v-if="loader" />Previous Page</va-button></span>
+      <span style="float:right"><va-button icon="check" type="submit" @click="onCreate()" color="success"><Loader v-if="loader" />Save Record</va-button></span>
+  
+  
+
  
 </template>
 
@@ -74,7 +98,12 @@ export default {
       id: 3,
       description: 'Third option',
     },
-      ]
+      ],
+
+      tenderRequirementFile:'',
+      technicalSubmissionFile:'',
+      financialSubmissionFile:'',
+      othersSubmissionFile:'',
       
     };
   },
