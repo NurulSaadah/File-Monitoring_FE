@@ -1,6 +1,6 @@
 <template>
   <va-card class="col-span-12 sm:col-span-12">
-    <va-card-title>Client Management</va-card-title>
+    <va-card-title>Setting : Client Management</va-card-title>
     <va-card-content>
       <form>
         <div class="grid grid-cols-12 gap-6">

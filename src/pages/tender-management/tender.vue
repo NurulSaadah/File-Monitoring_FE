@@ -1,9 +1,9 @@
 <template>
   <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
-    <va-card-title>List of Tenders</va-card-title>
+    <va-card-title>Tender Management : List of Tenders</va-card-title>
     <va-card-content class="overflow-auto">
       <span style="float: right"><va-button icon="add_circle_outline" type="submit" @click="onAdd()"><Loader v-if="loader" />Add New Record</va-button></span>
-      <table class="va-table va-table--striped va-table--hoverable w-full mt-6">
+      <table class="va-table va-table--striped va-table--hoverable w-full mt-10">
         <thead>
           <tr>
             <th>No</th>
@@ -68,6 +68,10 @@ export default {
         this.tenderList = response.data.list;
       }
     },
+
+    async onAdd(){
+      this.$router.push({ name: 'new-tender' });
+    }
     
   }
 };

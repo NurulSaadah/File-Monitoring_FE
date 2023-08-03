@@ -1,6 +1,6 @@
 <template>
   <va-card class="col-span-12 sm:col-span-12">
-    <va-card-title>Settings</va-card-title>
+    <va-card-title>Setting : General Setting</va-card-title>
     <va-card-content>
       <form>
         <div class="grid grid-cols-12 gap-6">
