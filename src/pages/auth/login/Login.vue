@@ -60,7 +60,7 @@ export default {
               if(this.passworduser == '123456'){
                 this.$router.push({ name: 'reset-password' });
               }else{
-                this.$router.push({ name: '' });
+                this.$router.push({ name: 'dashboard' });
               }
           }
         }
