@@ -71,6 +71,12 @@ export default {
 
     async onAdd(){
       this.$router.push({ name: 'new-tender' });
+    },
+    async viewRecord(){
+      this.$router.push({ name: 'view-tender' });
+    },
+    async editRecord(){
+      this.$router.push({ name: 'edit-tender' });
     }
     
   }
