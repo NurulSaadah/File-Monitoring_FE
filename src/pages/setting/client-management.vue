@@ -8,7 +8,18 @@
             <va-input v-model="clientName" placeholder="Enter Client Name" />
           </div>
           <div class="flex md:col-span-2 sm:col-span-6 col-span-12">
-            <va-input v-model="clientStatus" placeholder="Enter Status" />
+            <select style="border-radius: 5px; border: 1px solid lightgrey;width: 100%;height: 100%;"
+                  v-model="status"
+                  class="form-select"
+                  aria-label="Default select example" label="Status">
+                    <option value="" disabled selected>Select Status</option>
+                    <option 
+                      v-for="stat in statusList"
+                        v-bind:key="stat.setting_id"
+                        v-bind:value="stat.setting_id">
+                      {{ stat.parameter }}</option>
+
+                 </select>
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
             <input type="hidden" v-model="editID" />
@@ -24,7 +35,7 @@
   <br />
   <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
     <va-card-title>List of Clients</va-card-title>
-    <div class="grid grid-cols-12 gap-6 ml-5">
+    <!--<div class="grid grid-cols-12 gap-6 ml-5">
             <div class="flex md:col-span-12 col-span-12">
               <select style="border-radius: 5px; border: 1px solid lightgrey;width: 30%;height: 130%;"
                   v-model="typeSearch"
@@ -38,8 +49,22 @@
                  </select>
              
             </div>
-     </div>
+     </div>-->
+     <div class="flex md:col-span-2 sm:col-span-6 col-span-12 ml-5">
+            <select style="border-radius: 5px; border: 1px solid lightgrey;width: 30%;height: 150%;"
+                  v-model="typeSearch"
+                  class="form-select"
+                  aria-label="Default select example" label="Status"
+                  @change="onChange($event)">>
+                    <option value="" disabled selected>Select Status</option>
+                    <option 
+                      v-for="stat in statusList"
+                        v-bind:key="stat.setting_id"
+                        v-bind:value="stat.setting_id">
+                      {{ stat.parameter }}</option>
 
+                 </select>
+          </div>
     <va-card-content class="overflow-auto">
       <table class="va-table va-table--striped va-table--hoverable w-full">
         <thead>
@@ -55,7 +80,8 @@
           <tr v-for="(clt, idx) in clientList" :key="idx">
             <td>{{ idx + 1 }}</td>
             <td>{{ clt.client_name }}</td>
-            <td>{{ clt.client_status }}</td>
+            <td v-if="clt.client_status == 1">Active</td>  
+            <td v-if="clt.client_status == 0">Inactive</td>  
             <td> <va-list-item-section icon><va-icon name="edit" title="Edit Record" color="gray" @click="editRecord(clt)" /></va-list-item-section></td>
           </tr>
         </tbody>
@@ -74,6 +100,8 @@ export default {
     return {
       loader:false,
       clientList: [],
+      statusList:[],
+      status:'',
       typeSearch:'ALL',
       clientName:'',
       clientStatus:'',
@@ -88,6 +116,7 @@ export default {
     
     this.userdetails = JSON.parse(localStorage.getItem("userdetails"));
     this.GetClientList();
+    this.GetList();
     
   },
   methods: {
@@ -139,7 +168,7 @@ export default {
                           const response = await this.$axios.post(
                               "clientStore", {
                                  client_name:this.clientName,
-                                 client_status:this.clientStatus,
+                                 client_status:this.status,
                                   editId:this.editID,
                                 
                               }, 
@@ -174,7 +203,7 @@ export default {
     },
     resetModel(){
       this.clientName='',
-      this.clientStatus='',
+      this.status='',
       this.editID=''
     },
     //edit record
@@ -182,7 +211,23 @@ export default {
     async editRecord(data){
      this.editID=data.client_id;
      this.clientName=data.client_name;
-     this.clientStatus=data.client_status;
+     this.status=data.client_status;
+    },
+
+    async GetList(){
+      const headers = {
+        Authorization: "Bearer " + this.userdetails.authorization.token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const response = await this.$axios.get(
+        "status" + "/typeSearchList",
+        {headers}
+      );
+
+      if(response.data.code == 200){
+        this.statusList = response.data.list;
+      }
     },
 
    

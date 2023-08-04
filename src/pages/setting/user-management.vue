@@ -143,7 +143,7 @@ export default {
         "Content-Type": "application/json",
       };
       const response = await this.$axios.get(
-        "getList?type=" + "status",
+        "status" + "/typeSearchList",
         {headers}
       );
 
