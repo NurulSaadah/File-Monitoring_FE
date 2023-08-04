@@ -29,8 +29,11 @@
                   class="form-select"
                   aria-label="Default select example" label="Status">
                     <option value="" disabled selected>Status</option>
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
+                    <option 
+                      v-for="stat in statuslist"
+                        v-bind:key="stat.setting_id"
+                        v-bind:value="stat.setting_id">
+                      {{ stat.parameter }}</option>
 
                  </select>
           </div>
@@ -66,7 +69,7 @@
             </td>
             <td>{{ user.user_access }}</td>
             <td v-if="user.status == 1">Active</td>  
-            <td v-if="user.status == 0">Inactive</td>  
+            <td v-if="user.status == 3">Inactive</td>  
             <td> <va-list-item-section icon>
               <va-icon name="edit" color="gray" @click="editRecord(user)"/>
               </va-list-item-section>
@@ -102,6 +105,7 @@ export default {
       screenaccess: "",
       showSecondModal: false,
       modalEmail: "",
+      statuslist: [],
     };
 
   },
@@ -109,6 +113,7 @@ export default {
   beforeMount(){ 
     this.userdetails = JSON.parse(localStorage.getItem("userdetails"));
     this.GetUserDetails();
+    this.GetList();
   },
 
   mounted(){
@@ -128,6 +133,22 @@ export default {
 
       if(response.data.code == 200 || response.data.code == '200'){
         this.userlist = response.data.list;
+      }
+    },
+
+    async GetList(){
+      const headers = {
+        Authorization: "Bearer " + this.userdetails.authorization.token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const response = await this.$axios.get(
+        "getList?type=" + "status",
+        {headers}
+      );
+
+      if(response.data.code == 200){
+        this.statuslist = response.data.list;
       }
     },
 
