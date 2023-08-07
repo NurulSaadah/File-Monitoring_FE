@@ -164,7 +164,9 @@ export default {
       
     },
     //edit record
-  
+   onBack(){
+    this.$router.push({ name: 'tender' });
+   }
   
      
    

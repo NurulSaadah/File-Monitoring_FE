@@ -98,6 +98,7 @@ export default {
       loader:false,
       settingList: [],
       typeList: [],
+      statuslist: [],
       typeSearch:'ALL',
       type:'',
       parameter:'',
@@ -106,6 +107,7 @@ export default {
       index:'',
       description:'',
       editID:'',
+      
     };
   },
   mounted() {
