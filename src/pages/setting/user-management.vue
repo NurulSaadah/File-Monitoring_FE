@@ -68,8 +68,8 @@
                       >
             </td>
             <td>{{ user.user_access }}</td>
-            <td v-if="user.status == 1">Active</td>  
-            <td v-if="user.status == 3">Inactive</td>  
+            <td v-if="user.value == 1">Active</td>  
+            <td v-if="user.value == 0">Inactive</td>  
             <td> <va-list-item-section icon>
               <va-icon name="edit" color="gray" @click="editRecord(user)"/>
               </va-list-item-section>
