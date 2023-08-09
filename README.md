@@ -33,11 +33,6 @@ Based on <a href="https://github.com/epicmaxco/vuestic-ui">Vuestic UI</a> librar
   </a>
 </p>
 
-## Installation
-Run:
-- npm install
-- npm install moment --save
-
 ### Documentation
 
 Documentation, guides and tutorials are available
@@ -73,6 +68,7 @@ Then, if you use npm:
 
 ```
 $ npm install
+$ npm install moment --save
 
 # serve with hot reload at localhost:8080 by default.
 $ npm run dev
