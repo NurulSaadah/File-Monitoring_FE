@@ -33,6 +33,11 @@ Based on <a href="https://github.com/epicmaxco/vuestic-ui">Vuestic UI</a> librar
   </a>
 </p>
 
+## Installation
+Run:
+- npm install
+- npm install moment --save
+
 ### Documentation
 
 Documentation, guides and tutorials are available
