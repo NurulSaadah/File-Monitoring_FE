@@ -35,31 +35,40 @@
         <tbody>
           <tr v-for="(file, idx) in filelist" :key="idx">
             <td>{{ idx + 1 }}</td>
-            <td>{{ getFormattedDate(file.timestamp) }}</td>
+            <td>{{ getFormattedDate(file.created_at) }}</td>
             <td>{{ file.file_name }}</td>
-            <td> <va-list-item-section icon><va-icon name="eye" title="View Record" color="success" @click="viewRecord(clt)" /><va-icon name="edit" title="Edit Record" color="gray" @click="editRecord(clt)" /></va-list-item-section></td>
+            <td> <va-list-item-section icon><va-icon name="delete" style="color: rgb(168, 8, 8);" title="Delete Record"  @click="deleteRecord(set)" /></va-list-item-section></td>
 
           </tr>
         </tbody>
       </table>
-      <p v-if="!filelist.length" style=" padding: 0px; margin: 10px;color: red;display: flex;justify-content: center;">No Record Found</p>
+      <va-card-content>
+        <va-file-upload v-model="backupFile" type="single" />
+        <va-button @click="uploadFile" ><Loader v-if="loader" /> Upload</va-button>
+      </va-card-content>
     </va-card-content>
   </va-card>
 </template>
 
 <script>
+import swal from 'sweetalert2';
+import Loader from "../../components/loader.vue";
 import moment from 'moment';
 export default{
-
+  components: { Loader },
   data(){
     return{
       loader: false,
       userdetails: null,
       filelist: [],
       userid: "",
+      email: "",
       search: "",
       date_from: "",
       date_to: "",
+      backupFile: [],
+      file:true,
+      uploadBtn: false,
 
     };
   },
@@ -67,24 +76,27 @@ export default{
   beforeMount(){
     this.userdetails = JSON.parse(localStorage.getItem("userdetails"));
     this.userid = this.userdetails.user.user_id;
+    this.email = this.userdetails.user.email;
     this.GetFileList();
   },
 
   mounted(){
+    if(this.backupFile !=null){
+      this.file = false;
+      this.uploadBtn = true;
+    }
   },
 
   methods: {
     async GetFileList(){
       const headers = {
         Authorization: "Bearer " + this.userdetails.authorization.token,
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: "multipart/form-data",
+        "Content-Type": "multipart/form-data",
       };
-      const response = await this.$axios.post(
-        "fileList",
-        {
-          user_id: this.userid
-        },{headers}
+      const response = await this.$axios.get(
+        this.userid + "/fileList",
+        {headers}
       );
 
       if(response.data.code == 200 || response.data.code == '200'){
@@ -136,6 +148,53 @@ export default{
         var visible = (dateVal.isBetween(dateFrom, dateTo, null, [])) ? "" : "none"; // [] for inclusive
         $(tr).css('display', visible);
       });
+    },
+
+    async uploadFile(){
+      try{
+        this.loader = true;
+        const headers = {
+          Authorization: "Bearer " + this.userdetails.authorization.token,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        };
+
+        let body = new FormData();
+
+        body.append("user_id", this.userid);
+        body.append("file", this.backupFile);
+        body.append("email", this.email);
+
+        const response = await this.$axios.post(
+          "fileStore",
+          body,{headers}
+        );
+        
+        if(response.data.code == 200 || response.data.code == '200'){
+          this.loader = false;
+          swal.fire('Record Successfully Saved', '', 'success')
+          this.GetFileList();
+          this.backupFile=[];
+          this.uploadBtn = false;
+          this.file=true;
+        }
+        else {
+                this.loader = false;
+                  this.resetModel();
+                  swal.fire({
+                      icon: 'error',
+                      title: 'Oops... Something Went Wrong!',
+                      text: 'the error is: ' + JSON.stringify(response.data.message),
+                  })
+          
+              }
+      }catch(e){
+        swal.fire({
+                    icon: 'error',
+                    title: 'Oops... Something Went Wrong!',
+                    text: 'the error is: ' + e,
+                })
+      }
     },
   }
 
