@@ -5,33 +5,33 @@
       <form>
         <div class="grid grid-cols-12 gap-6">
           <div class="flex md:col-span-12 sm:col-span-6 col-span-12">
-            <va-input v-model="title" placeholder="Enter Tender Title" />
+            <va-input v-model="title" placeholder="Enter Tender Title" label="title" />
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-              <va-select
-                v-model="searchableSelectModel"
-                :label="select"
-                searchable
-                text-by="description"
-                track-by="id"
-                :options="simpleOptions"
-              />
+            <select style="border-radius: 5px; border: 1px solid lightgrey;width: 100%;height: 100%;"
+                  v-model="client"
+                  class="form-select"
+                  aria-label="Default select example" label="Status">
+                    <option value="" disabled selected>Select Client</option>
+                    <option 
+                      v-for="clt in clientList"
+                        v-bind:key="clt.client_id"
+                        v-bind:value="clt.client_id">
+                      {{ clt.client_name }}</option>
+
+                 </select>
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-            <va-input v-model="refNo" placeholder="Enter Tender Reference No." />
+            <va-input v-model="refNo" placeholder="Enter Tender Reference No." label="Reference Number" />
           </div>
           <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-              <va-date-input
-                v-model="simple"
-                first-weekday="Monday"
-                highlight-weekend
-              />
+            <va-input type="date" v-model="date" placeholder="dd/mm/yyyy" label="FROM" id="dateFrom" />
             </div>
             <div class="flex md:col-span-6 sm:col-span-6 col-span-12">
-            <va-input v-model="price" placeholder="Enter Submission Price (0.00)" />
+            <va-input v-model="price" placeholder="Enter Submission Price (0.00)" label="Submission Price" />
           </div>
           <div class="flex md:col-span-12 sm:col-span-6 col-span-12">
-            <va-input type="textarea" v-model="remark" placeholder="Enter Remark" max-rows="50" />
+            <va-input type="textarea" v-model="remark" placeholder="Enter Remark" label="remark" rows="10" />
           </div>
          
         </div>
@@ -43,22 +43,22 @@
   <br />
  
     <va-card class="col-span-2">
-      <va-card-title>Tender Requirement</va-card-title>
+      <va-card-title>1. Tender Requirement</va-card-title>
       <va-card-content>
         <va-file-upload v-model="tenderRequirementFile" type="single" />
       </va-card-content>
     <br>
-      <va-card-title>Technical Submission</va-card-title>
+      <va-card-title>2. Technical Submission</va-card-title>
       <va-card-content>
         <va-file-upload v-model="technicalSubmissionFile" type="single" />
       </va-card-content>
     <br>
-      <va-card-title>Financial Submission</va-card-title>
+      <va-card-title>3. Financial Submission</va-card-title>
       <va-card-content>
         <va-file-upload v-model="financialSubmissionFile" type="single" />
       </va-card-content>
    <br>
-      <va-card-title>Others Submission</va-card-title>
+      <va-card-title>4. Others Submission</va-card-title>
       <va-card-content>
         <va-file-upload v-model="othersSubmissionFile" type="single" />
       </va-card-content>
@@ -78,27 +78,17 @@
 <script>
 import swal from 'sweetalert2';
 import Loader from "../../components/loader.vue";
+import moment from 'moment';
 export default {
   components: { Loader },
   data() {
     return {
       loader:false,
       clientList: [],
-      simple:new Date(),
-      simpleOptions:[
-      {
-      id: 1,
-      description: 'First option',
-    },
-    {
-      id: 2,
-      description: 'Second option',
-    },
-    {
-      id: 3,
-      description: 'Third option',
-    },
-      ],
+      date: "",
+      client:"",
+      price:0.00,
+      userdetails:"",
 
       tenderRequirementFile:'',
       technicalSubmissionFile:'',
@@ -114,6 +104,7 @@ export default {
   beforeMount() {
     
     this.userdetails = JSON.parse(localStorage.getItem("userdetails"));
+    this.GetClientList();
   
     
   },
@@ -129,15 +120,33 @@ export default {
                 if (result.isConfirmed) {
                   try {
                     this.loader = true;
+                    const headers = {
+                      Authorization: "Bearer " + this.userdetails.authorization.token,
+                      Accept: "application/json",
+                      "Content-Type": "application/json",
+                    };
+                    let body = new FormData();
+
+                    body.append("title",this.title);
+                    body.append("reference_no",this.refNo);
+                    body.append("client_id",this.client);
+                    body.append("submission_date",this.date);
+                    body.append("submission_price",this.price );
+                    body.append("tender",this.tenderRequirementFile);
+                    body.append("technical",this.technicalSubmissionFile);
+                    body.append("financial",this.financialSubmissionFile);
+                    body.append("others", this.othersSubmissionFile);
+                    body.append("remark", this.remark);
+                    body.append("user_id",this.userdetails.user.user_id );
+
                           const response = await this.$axios.post(
-                              "tenderStore", {}, 
+                              "tenderStore", body ,{headers}
                           );
                           console.log("response", response.data);
                           if (response.data.code == 200) {
                             this.loader = false;
                               this.resetModel();
                               swal.fire('Record Successfully Saved', '', 'success')
-                              this.GetClientList();
                           } else {
                             this.loader = false;
                               this.resetModel();
@@ -149,6 +158,7 @@ export default {
                       
                           }
                   } catch (e) {
+                    this.loader = false;
                           swal.fire({
                               icon: 'error',
                               title: 'Oops... Something Went Wrong!',
@@ -156,17 +166,48 @@ export default {
                           })
                       }
                 } else if (result.isDismissed) {
+                  this.loader = false;
                       swal.fire('Record are not saved', '', 'info')
                   }
               })
     },
     resetModel(){
-      
+      this.title="";
+      this.client="";
+      this.refNo="";
+      this.date="";
+      this.price=0.00;
+      this.remark="";
+
+      this.tenderRequirementFile="";
+      this.technicalSubmissionFile="";
+      this.financialSubmissionFile="";
+      this.othersSubmissionFile="";
+
     },
     //edit record
    onBack(){
     this.$router.push({ name: 'tender' });
-   }
+   },
+   getFormattedDate(date) {
+            return moment(date).format("DD/MM/YYYY")
+    },
+    async GetClientList(){
+      const headers = {
+        Authorization: "Bearer " + this.userdetails.authorization.token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const response = await this.$axios.get(
+        "clientList",
+        {headers}
+      );
+
+      if(response.data.code == 200){
+        this.clientList = response.data.list;
+      }
+    },
+    
   
      
    
