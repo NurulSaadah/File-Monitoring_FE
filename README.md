@@ -68,6 +68,7 @@ Then, if you use npm:
 
 ```
 $ npm install
+$ npm install moment --save
 
 # serve with hot reload at localhost:8080 by default.
 $ npm run dev
