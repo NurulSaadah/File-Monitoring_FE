@@ -127,7 +127,7 @@ export default {
         "Content-Type": "application/json",
       };
       const response = await this.$axios.get(
-        "/user/getUserList",
+        "getUserList",
         {headers}
       );
 
@@ -167,7 +167,7 @@ export default {
                       "Content-Type": "application/json",
                     };
                     const response = await this.$axios.post(
-                        "/user/insertOrupdate",
+                        "insertOrupdate",
                         {
                           email: this.email,
                           user_access: this.screenaccess,
