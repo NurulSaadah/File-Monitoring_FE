@@ -1,7 +1,7 @@
 <template>
   <div class="loader">
     <span>
-      <i class="fa fa-spinner fa-pulse" style="font-size:24px"></i>
+      <va-inner-loading loading></va-inner-loading>
     </span>
   </div>
 </template>
