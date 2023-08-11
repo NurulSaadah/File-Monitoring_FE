@@ -40,29 +40,39 @@
     </va-card-content>
 
   </va-card>
+  <br>
+  <va-card class="col-span-2">
+    <va-card-title>Upload Document</va-card-title>
+    <div class="grid grid-cols-12 gap-6">
+      <div class="flex md:col-span-12 sm:col-span-6 col-span-12 ml-5">
+        <va-file-upload v-model="tenderRequirementFile" type="single">
+          1. <span style="color: blue;text-decoration:underline;">Tender Requirement</span>
+        </va-file-upload>
+      </div>
+
+    </div>
+    <va-card-title>Tender Submission</va-card-title>
+    <div class="grid grid-cols-12 gap-6">
+      <div class="flex md:col-span-4 sm:col-span-6 col-span-12 ml-5">
+        <va-file-upload v-model="technicalSubmissionFile" type="single">
+          1. <span style="color: blue;text-decoration:underline;">Technical Submission</span>
+        </va-file-upload>
+      </div>
+      <div class="flex md:col-span-4 sm:col-span-6 col-span-12 ml-5">
+        <va-file-upload v-model="financialSubmissionFile" type="single">
+          2. <span style="color: blue;text-decoration:underline;">Financial Submission</span>
+        </va-file-upload>
+      </div>
+      <div class="flex md:col-span-4 sm:col-span-6 col-span-12 ml-5">
+        <va-file-upload v-model="othersSubmissionFile" type="single">
+          3. <span style="color: blue;text-decoration:underline;">Others Submission</span>
+        </va-file-upload>
+      </div>
+
+    </div>
+  </va-card>
   <br />
  
-    <va-card class="col-span-2">
-      <va-card-title>1. Tender Requirement</va-card-title>
-      <va-card-content>
-        <va-file-upload v-model="tenderRequirementFile" type="single" />
-      </va-card-content>
-    <br>
-      <va-card-title>2. Technical Submission</va-card-title>
-      <va-card-content>
-        <va-file-upload v-model="technicalSubmissionFile" type="single" />
-      </va-card-content>
-    <br>
-      <va-card-title>3. Financial Submission</va-card-title>
-      <va-card-content>
-        <va-file-upload v-model="financialSubmissionFile" type="single" />
-      </va-card-content>
-   <br>
-      <va-card-title>4. Others Submission</va-card-title>
-      <va-card-content>
-        <va-file-upload v-model="othersSubmissionFile" type="single" />
-      </va-card-content>
-    </va-card>
     <br>
     <br>
     <br>
@@ -87,8 +97,12 @@ export default {
       clientList: [],
       date: "",
       client:"",
-      price:0.00,
+      price:0,
       userdetails:"",
+      remark:"",
+      refNo:"",
+      title:"",
+
 
       tenderRequirementFile:'',
       technicalSubmissionFile:'',
@@ -147,9 +161,10 @@ export default {
                             this.loader = false;
                               this.resetModel();
                               swal.fire('Record Successfully Saved', '', 'success')
+                              this.onBack();
                           } else {
                             this.loader = false;
-                              this.resetModel();
+        
                               swal.fire({
                                   icon: 'error',
                                   title: 'Oops... Something Went Wrong!',
