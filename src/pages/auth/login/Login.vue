@@ -15,7 +15,8 @@
     </div>
 
     <div class="flex justify-center mt-4">
-      <va-button class="my-0" @click="onsubmit"> <Loader v-if="loader" /> Login</va-button>
+      <Loader v-if="loader" />
+      <va-button class="my-0" @click="onsubmit" v-if="!loader">Login</va-button>
     </div>
     
   </form>
