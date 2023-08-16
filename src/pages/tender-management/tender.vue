@@ -5,10 +5,11 @@
       <form>
         <div class="grid grid-cols-12 gap-6">
               <div class="flex md:col-span-3 sm:col-span-6 col-span-12">
-                <va-input type="date" v-model="date_from" placeholder="dd/mm/yyyy" label="FROM" id="dateFrom" @change="filterRows()"/>
+                <va-input type="date" v-model="date_from" :max="this.date_to" placeholder="dd/mm/yyyy" label="FROM" id="dateFrom" @change="filterRows()"/>
+            
               </div>
               <div class="flex md:col-span-3 sm:col-span-6 col-span-12">
-                <va-input type="date" v-model="date_to" placeholder="dd/mm/yyyy" label="TO" id="dateTo" @change="filterRows()"/>
+                <va-input type="date" v-model="date_to" :min="this.date_from" placeholder="dd/mm/yyyy" label="TO" id="dateTo" @change="filterRows()"/>
               </div>
                 <div class="flex md:col-span-6 sm:col-span-8 col-span-12">
                   <va-input v-model="search" placeholder="Search by title" id="searchFile" v-on:keyup="searchFileName()" label="SEARCH">
@@ -39,11 +40,12 @@
         <tbody>
           <tr v-for="(clt, idx) in tenderList" :key="idx">
             <td>{{ idx + 1 }}</td>
-            <td>{{ clt.submission_date }}</td>
+            <td>{{ getFormattedDate(clt.submission_date) }}</td>
             <td>{{ clt.title }}</td>
             <td>{{ clt.reference_no }}</td>
             <td>{{ clt.submission_price }}</td>
-            <td> <va-list-item-section icon><va-icon name="eye" title="View Record" color="success" @click="viewRecord(clt)" /><va-icon name="edit" title="Edit Record" color="gray" @click="editRecord(clt)" /></va-list-item-section></td>
+            <td> <va-list-item-section icon><va-icon name="eye" title="View Record" color="success" @click="viewRecord(clt)" />
+              <va-icon name="edit" title="Edit Record" color="gray" @click="editRecord(clt.tender_id)" /></va-list-item-section></td>
           </tr>
         </tbody>
       </table>
@@ -55,6 +57,7 @@
 <script>
 import Loader from "../../components/loader.vue";
 import moment from 'moment';
+import $ from 'jquery';
 export default {
   components: { Loader },
   data() {
@@ -100,8 +103,8 @@ export default {
     async viewRecord(){
       this.$router.push({ name: 'view-tender' });
     },
-    async editRecord(){
-      this.$router.push({ name: 'edit-tender' });
+    async editRecord(Id){
+      this.$router.push({ name: 'edit-tender',query: { tender_id: Id }, });
     },
 
     getFormattedDate(date) {
@@ -131,23 +134,20 @@ export default {
     filterRows() {
       var from = $('#dateFrom').val();
       var to = $('#dateTo').val();
-      
-      if (!from && !to) { // no value for from and to
-        return;
-      }
 
       from = from || '1970-01-01'; // default from to a old date if it is not set
       to = to || '2999-12-31';
 
-      var dateFrom = moment(from);
-      var dateTo = moment(to);
+      var dateFrom = moment(from).format("YYYY-MM-DD");
+      var dateTo = moment(to).format("YYYY-MM-DD");
 
-      $('#filelist tr').each(function(i, tr) {
+      $('#tenderList tr:not(:first)').each(function(i, tr) {
         var val = $(tr).find("td:nth-child(2)").text();
         var dateVal = moment(val, "DD/MM/YYYY");
         var visible = (dateVal.isBetween(dateFrom, dateTo, null, [])) ? "" : "none"; // [] for inclusive
         $(tr).css('display', visible);
       });
+      
     },
     
   }
