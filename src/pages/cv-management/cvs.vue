@@ -1,8 +1,21 @@
 <template>
-  <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
+  <va-card class="col-span-12 sm:col-span-6 md:col-span-3">
     <va-card-title>CV Management : List of CV</va-card-title>
+    <va-card-content>
+      <form>
+        <div class="grid grid-cols-12 gap-6">
+                <div class="flex md:col-span-6 sm:col-span-8 col-span-12">
+                  <va-input v-model="search" placeholder="Search by email" id="searchFile" v-on:keyup="searchFileName()" label="SEARCH">
+                  </va-input>
+            </div>
+          </div>
+      </form>
+    </va-card-content>
+  </va-card>
+  <br>
+  <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
     <va-card-content class="overflow-auto">
-      <table class="va-table va-table--striped va-table--hoverable w-full mt-10">
+      <table class="va-table va-table--striped va-table--hoverable w-full mt-10" id="cvlist">
         <thead>
           <tr>
             <th>No</th>
@@ -47,6 +60,43 @@ export default {
   },
   methods: {
     async GetCVList(){
+      const headers = {
+        Authorization: "Bearer " + this.userdetails.authorization.token,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      const response = await this.$axios.get(
+        "getUserList",
+        {headers}
+      );
+
+      if(response.data.code == 200 || response.data.code == '200'){
+        this.cvList = response.data.list;
+      }
+    },
+
+    searchFileName(){
+      var input, filter, table, tr, td, i , txtValue;
+
+      input = document.getElementById("searchFile");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("cvlist");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];             //2 indicates the third column
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    },
+
+    async viewRecord(){
+      this.$router.push({ name: 'view-cv' });
     },
 
   }
