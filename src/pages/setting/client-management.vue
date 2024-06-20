@@ -35,21 +35,7 @@
   <br />
   <va-card class="col-span-12 sm:col-span-6 md:col-span-3" stripe stripe-color="info">
     <va-card-title>List of Clients</va-card-title>
-    <!--<div class="grid grid-cols-12 gap-6 ml-5">
-            <div class="flex md:col-span-12 col-span-12">
-              <select style="border-radius: 5px; border: 1px solid lightgrey;width: 30%;height: 130%;"
-                  v-model="typeSearch"
-                  class="form-select"
-                  aria-label="Default select example"
-                  @change="onChange($event)">
-                    <option value="ALL">All List of Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-
-                 </select>
-             
-            </div>
-     </div>-->
+  
      <div class="flex md:col-span-2 sm:col-span-6 col-span-12 ml-5">
             <select style="border-radius: 5px; border: 1px solid lightgrey;width: 30%;height: 150%;"
                   v-model="typeSearch"
